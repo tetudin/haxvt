@@ -232,7 +232,7 @@ room.onCommand0_top5assists = () => {
 }
 
 //retorna top5 ganhadores
-room.onCommand0_top5vitorias = () => {
+room.onCommand0_top5ganhadores = () => {
 	let count = 1;
 	topSorted = Object.keys(stats).sort(function(a,b){return stats[a].vitorias-stats[b].vitorias})
 	for (let i in topSorted.reverse()) {
