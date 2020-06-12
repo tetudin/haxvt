@@ -72,7 +72,10 @@ function getBluePlayers() {
 
 //ao criar sala inicializa lista de ips vazia
 room.onRoomLink = (link) => {
-	connList = {}
+	if (stats == null) {
+		stats = {};
+	}
+	connList = {};
 }
 
 //quando player entra 
