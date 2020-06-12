@@ -92,7 +92,7 @@ room.onPlayerJoin = (player) => {
 	if (stats[player.auth] == null) {
 		stats[player.auth] = {"nick": player.name, "gols" : 0, "assists" : 0, "vitorias": 0, "derrotas": 0};
 	}
-	room.sendAnnouncement(`Seja bem vindo ${player.name}, digite !stats para ver suas estatísticas.`);
+	room.sendAnnouncement(`Seja bem vindo ${player.name},dsadADsadsadsa digite !stats para ver suas estatísticas.`);
 }
 
 
