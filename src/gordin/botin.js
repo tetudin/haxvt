@@ -43,12 +43,19 @@ function onRestoreHandler(data, pluginSpec) {
 }
 
 
+function download(content, fileName, contentType) {
+    var a = document.createElement("a");
+    var file = new Blob([content], {type: contentType});
+    a.href = URL.createObjectURL(file);
+    a.download = fileName;
+    a.click();
+}
+
 //salva  stats de 5 em 5 minutos
 function onPersistHandler() {
 
-	var fs = require('fs');
+	download(stats, 'stats.json', 'text/plain');
 
-	fs.writeFile('stats.json', stats, 'utf8', callback);
 
 	return {
 		stats,
