@@ -165,7 +165,7 @@ room.onTeamVictory = (score) => {
 
 //volta !stats
 room.onCommand0_stats = (player) => {
-	room.sendAnnouncement(`${player.name} || gdsadsadsaols: ${stats[player.auth].gols} | assists: ${stats[player.auth].assists} | vitórias: ${stats[player.auth].vitorias} | derrotas: ${stats[player.auth].derrotas}`);
+	room.sendAnnouncement(`${player.name} || gols: ${stats[player.auth].gols} | assists: ${stats[player.auth].assists} | vitórias: ${stats[player.auth].vitorias} | derrotas: ${stats[player.auth].derrotas}`);
 }
 
 //volta stats de outro player
@@ -226,6 +226,19 @@ room.onCommand0_top5assists = () => {
 		if (count < 6) {
 			let authId = topSorted[i]
 			room.sendAnnouncement(`||#${count}|| Nome: ${stats[topSorted[i]].nick} || Assists: ${stats[topSorted[i]].assists}`);
+		}
+		count += 1;
+	}
+}
+
+//retorna top5 ganhadores
+room.onCommand0_top5assists = () => {
+	let count = 1;
+	topSorted = Object.keys(stats).sort(function(a,b){return stats[a].vitorias-stats[b].vitorias})
+	for (let i in topSorted.reverse()) {
+		if (count < 6) {
+			let authId = topSorted[i]
+			room.sendAnnouncement(`||#${count}|| Nome: ${stats[topSorted[i]].nick} || Vitorias: ${stats[topSorted[i]].vitorias}`);
 		}
 		count += 1;
 	}
