@@ -1,0 +1,11 @@
+{
+  "name": "tetudin/haxvt",
+  "description": "Scripts do vt",
+  "author": "gordin",
+  "config": {
+    "path": "src"
+  },
+  "plugins": [
+    "testes/botintestes"
+  ]
+}
