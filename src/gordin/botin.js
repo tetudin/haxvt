@@ -228,6 +228,19 @@ room.onCommand0_top5assists = () => {
 	}
 }
 
+//retorna top5 ganhadores
+room.onCommand0_top5ganhadores = () => {
+	let count = 1;
+	topSorted = Object.keys(stats).sort(function(a,b){return stats[a].vitorias-stats[b].vitorias})
+	for (let i in topSorted.reverse()) {
+		if (count < 6) {
+			let authId = topSorted[i]
+			room.sendAnnouncement(`||#${count}|| Nome: ${stats[topSorted[i]].nick} || Vitorias: ${stats[topSorted[i]].vitorias}`);
+		}
+		count += 1;
+	}
+}
+
 //salva DB imediatamente, só para admins
 room.onCommand0_savedb = (player) => {
 	roles = getRoles()
