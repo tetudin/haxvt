@@ -81,9 +81,9 @@ room.onRoomLink = (link) => {
 //quando player entra 
 room.onPlayerJoin = (player) => {
 	//checa se ip já está na lista e kika se estiver
-	if (connList[player.conn] != null) {
-		room.kickPlayer(player.id, "IP já conectado!", false);
-	}
+	//if (connList[player.conn] != null) {
+	//	room.kickPlayer(player.id, "IP já conectado!", false);
+	//}
 
 	//adiciona na lista 
 	connList[player.conn] = player.name;
