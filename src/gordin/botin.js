@@ -162,14 +162,14 @@ room.onTeamVictory = (score) => {
 
 //volta !stats
 room.onCommand0_stats = (player) => {
-	room.sendAnnouncement(`${player.name} || gols: ${stats[player.auth].gols} | assists: ${stats[player.auth].assists} | vitórias: ${stats[player.auth].vitorias} | derrotas: ${stats[player.auth].derrotas}`);
+	room.sendAnnouncement(`${player.name} || gols: ${stats[player.auth].gols} ⚽ | assists: ${stats[player.auth].assists} 👟 | vitórias: ${stats[player.auth].vitorias} 👍 | derrotas: ${stats[player.auth].derrotas} 😥`);
 }
 
 //volta stats de outro player
 room.onCommand1_stats = (player, [playerName]) => {
 	const playersArray = Object.keys(stats).map(i => stats[i])
 	playerFind = playersArray.find(p  => p.nick == [playerName]);
-	room.sendAnnouncement(`${playerFind.nick} || gols: ${playerFind.gols} | assists: ${playerFind.assists} | vitórias: ${playerFind.vitorias} | derrotas: ${playerFind.derrotas}`);
+	room.sendAnnouncement(`${playerFind.nick} || gols: ${playerFind.gols}  ⚽ | assists: ${playerFind.assists} 👟 | vitórias: ${playerFind.vitorias} 👍 | derrotas: ${playerFind.derrotas} 😥` );
 }
 
 
@@ -209,7 +209,7 @@ room.onCommand0_top5gols = () => {
 	for (let i in topSorted.reverse()) {
 		if (count < 6) {
 			let authId = topSorted[i]
-			room.sendAnnouncement(`||#${count}|| Nome: ${stats[topSorted[i]].nick} || Gols: ${stats[topSorted[i]].gols}`);
+			room.sendAnnouncement(`||#${count}|| Nome: ${stats[topSorted[i]].nick} || Gols: ${stats[topSorted[i]].gols} ⚽`);
 		}
 	count += 1;
 	}
@@ -222,7 +222,7 @@ room.onCommand0_top5assists = () => {
 	for (let i in topSorted.reverse()) {
 		if (count < 6) {
 			let authId = topSorted[i]
-			room.sendAnnouncement(`||#${count}|| Nome: ${stats[topSorted[i]].nick} || Assists: ${stats[topSorted[i]].assists}`);
+			room.sendAnnouncement(`||#${count}|| Nome: ${stats[topSorted[i]].nick} || Assists: ${stats[topSorted[i]].assists} 👟`);
 		}
 		count += 1;
 	}
@@ -235,7 +235,7 @@ room.onCommand0_top5ganhadores = () => {
 	for (let i in topSorted.reverse()) {
 		if (count < 6) {
 			let authId = topSorted[i]
-			room.sendAnnouncement(`||#${count}|| Nome: ${stats[topSorted[i]].nick} || Vitorias: ${stats[topSorted[i]].vitorias}`);
+			room.sendAnnouncement(`||#${count}|| Nome: ${stats[topSorted[i]].nick} || Vitorias: ${stats[topSorted[i]].vitorias}` 👍);
 		}
 		count += 1;
 	}
