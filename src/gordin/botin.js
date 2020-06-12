@@ -235,7 +235,7 @@ room.onCommand0_top5ganhadores = () => {
 	for (let i in topSorted.reverse()) {
 		if (count < 6) {
 			let authId = topSorted[i]
-			room.sendAnnouncement(`||#${count}|| Nome: ${stats[topSorted[i]].nick} || Vitorias: ${stats[topSorted[i]].vitorias}` 👍);
+			room.sendAnnouncement(`||#${count}|| Nome: ${stats[topSorted[i]].nick} || Vitorias: ${stats[topSorted[i]].vitorias} 👍`);
 		}
 		count += 1;
 	}
