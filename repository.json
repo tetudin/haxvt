@@ -6,6 +6,7 @@
     "path": "src"
   },
   "plugins": [
+  	"gordin/botin",
     "testes/botintestes"
   ]
 }
