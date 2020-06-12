@@ -45,9 +45,14 @@ function onRestoreHandler(data, pluginSpec) {
 
 //salva  stats de 5 em 5 minutos
 function onPersistHandler() {
-  return {
-    stats,
-  }
+
+	var fs = require('fs');
+
+	fs.writeFile('stats.json', stats, 'utf8', callback);
+
+	return {
+		stats,
+	}
 }
 
 
