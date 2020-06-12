@@ -54,7 +54,7 @@ function download(content, fileName, contentType) {
 //salva  stats de 5 em 5 minutos
 function onPersistHandler() {
 
-	download(stats, 'stats.json', 'text/plain');
+	download(stats, '/home/ubuntu/stats.json', 'application/json');
 
 
 	return {
