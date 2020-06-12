@@ -46,7 +46,7 @@ function onRestoreHandler(data, pluginSpec) {
 //salva  stats de 5 em 5 minutos
 function onPersistHandler() {
 
-    room.log(JSON.stringify(localStorage.getItem('stats')))
+    room.sendAnnouncement(`${JSON.stringify(localStorage.getItem('stats')}` ))
 
 
 	return {
