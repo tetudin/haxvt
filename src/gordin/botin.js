@@ -27,13 +27,26 @@ https://hhm.surge.sh/api/index.html
 https://github.com/saviola777/hhm-plugins/
 */
 
+//posta stats no server
+async function postData(url = '', data = {}) {
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data) 
+  });
+}
+
+
 //carrega admins "oficiais" que usam !auth
 function getRoles() {
 	return room.getPlugin(`sav/roles`);
 }
 
-//dsadacarrega dados persistentes
+//carrega dados persistentes
 function onRestoreHandler(data, pluginSpec) {
+
 	//se não existir nada cria 
 	if (data == null) {
 		data = {'stats': {} }
@@ -43,11 +56,13 @@ function onRestoreHandler(data, pluginSpec) {
 }
 
 
-//salva  stats de 5 em 5 minutos
+//salva  stats de 5 em 5 minutos e manda para db
 function onPersistHandler() {
-  return {
-    stats,
-  }
+	postData('https://gfvt.herokuapp.com/stats', stats).then();
+
+	return {
+	stats,
+	}
 }
 
 
@@ -71,7 +86,7 @@ function getBluePlayers() {
 
 
 //ao criar sala inicializa lista de ips vazia
-room.onRoomLink = (link) => {
+function onRoomLinkHandler() {
 	connList = {}
 }
 
@@ -84,6 +99,11 @@ room.onPlayerJoin = (player) => {
 
 	//adiciona na lista 
 	connList[player.conn] = player.name;
+
+	//se player apenas mudou nick muda também no stats
+	if (stats[player.auth] != null) {
+		stats[player.auth].nick = player.name;
+	}
 
 	//se o player nunca entrou na lista cria objeto em stats
 	if (stats[player.auth] == null) {
@@ -253,3 +273,6 @@ room.onCommand0_savedb = (player) => {
 //configura funcoes de persistencia
 room.onPersist = onPersistHandler;
 room.onRestore = onRestoreHandler;
+
+
+room.onRoomLink = onRoomLinkHandler;
