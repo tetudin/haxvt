@@ -165,7 +165,7 @@ room.onTeamVictory = (score) => {
 
 //volta !stats
 room.onCommand0_stats = (player) => {
-	room.sendAnnouncement(`${player.name} || gols: ${stats[player.auth].gols} | assists: ${stats[player.auth].assists} | vitórias: ${stats[player.auth].vitorias} | derrotas: ${stats[player.auth].derrotas}`);
+	room.sendAnnouncement(`${player.name} || gols: ${stats[player.auth].gols} ⚽ | assists: ${stats[player.auth].assists} | vitórias: ${stats[player.auth].vitorias} | derrotas: ${stats[player.auth].derrotas}`);
 }
 
 //volta stats de outro player
