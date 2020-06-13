@@ -187,13 +187,18 @@ room.onCommand0_stats = (player) => {
 
 //volta stats de outro player
 room.onCommand_stats = (player, playerName) => {
-	if (playerName == null) return;
+	if (playerName != "") {
+		playerName = String(playerName).replace(/,/g," ");
 
-	playerName = String(playerName).replace(/,/g," ");
+		const playersArray = Object.keys(stats).map(i => stats[i])
+		playerFind = playersArray.find(p  => p.nick == playerName);
 
-	const playersArray = Object.keys(stats).map(i => stats[i])
-	playerFind = playersArray.find(p  => p.nick == playerName);
-	room.sendAnnouncement(`${playerFind.nick} || gols: ${playerFind.gols}  ⚽ | assists: ${playerFind.assists} 👟 | vitórias: ${playerFind.vitorias} 👍 | derrotas: ${playerFind.derrotas} 😥` );
+		if (playerFind == null) {
+			room.sendAnnouncement(`Usuário não encontrado 😥.` );
+		} else {
+			room.sendAnnouncement(`${playerFind.nick} || gols: ${playerFind.gols}  ⚽ | assists: ${playerFind.assists} 👟 | vitórias: ${playerFind.vitorias} 👍 | derrotas: ${playerFind.derrotas} 😥` );
+		}
+	}
 }
 
 
