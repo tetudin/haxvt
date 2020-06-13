@@ -27,6 +27,17 @@ https://hhm.surge.sh/api/index.html
 https://github.com/saviola777/hhm-plugins/
 */
 
+//posta stats no server
+async function postData(url = '', data = {}) {
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: {
+     'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data) 
+  });
+}
+
 //carrega admins "oficiais" que usam !auth
 function getRoles() {
 	return room.getPlugin(`sav/roles`);
