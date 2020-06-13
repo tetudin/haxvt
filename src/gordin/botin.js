@@ -58,7 +58,6 @@ function onRestoreHandler(data, pluginSpec) {
 //salva  stats de 5 em 5 minutos e manda para db
 function onPersistHandler() {
 	postData('https://gfvt.herokuapp.com/stats', stats).then();
-	stats = {"gordinfeliz":{"gols":15,"assists":10,"vitorias":11,"derrotas":29},"ll":{"gols":0,"assists":0,"vitorias":0,"derrotas":0},"wowo":{"gols":0,"assists":0,"vitorias":0,"derrotas":0},"turtle":{"gols":69,"assists":9,"vitorias":40,"derrotas":18},"sou ruim":{"gols":34,"assists":20,"vitorias":34,"derrotas":30},"comunismo já":{"gols":8,"assists":4,"vitorias":4,"derrotas":6},"gozz":{"gols":7,"assists":6,"vitorias":18,"derrotas":37},"TENHO CINCO MINUTOS SÓ":{"gols":4,"assists":1,"vitorias":2,"derrotas":0},"boladneve":{"gols":10,"assists":3,"vitorias":14,"derrotas":8},"BRUNO_TATTAGLIA_9":{"gols":40,"assists":3,"vitorias":16,"derrotas":20},"haxboleiro atuante":{"gols":2,"assists":1,"vitorias":5,"derrotas":11},"gambler":{"gols":5,"assists":9,"vitorias":14,"derrotas":2},"Fernando Torres":{"gols":0,"assists":0,"vitorias":0,"derrotas":2},"iaxxx":{"gols":2,"assists":0,"vitorias":5,"derrotas":1},"tonysk8":{"gols":0,"assists":0,"vitorias":0,"derrotas":0}};
 	return {
 	stats,
 	}
