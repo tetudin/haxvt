@@ -194,8 +194,7 @@ room.onCommand_stats = (player, playerName) => {
 	if (playerName != "") {
 		playerName = String(playerName).replace(/,/g," ");
 
-		const playersArray = Object.keys(stats).map(i => stats[i])
-		playerFind = playersArray.find(p  => p.nick == playerName);
+		playerFind = stats[playerName]
 
 		if (playerFind == null) {
 			room.sendAnnouncement(`Usuário não encontrado 😥.` );
