@@ -186,9 +186,13 @@ room.onCommand0_stats = (player) => {
 }
 
 //volta stats de outro player
-room.onCommand1_stats = (player, [playerName]) => {
+room.onCommand_stats = (player, playerName) => {
+	if (playerName == null) return;
+
+	playerName = String(playerName).replace(/,/g," ");
+
 	const playersArray = Object.keys(stats).map(i => stats[i])
-	playerFind = playersArray.find(p  => p.nick == [playerName]);
+	playerFind = playersArray.find(p  => p.nick == playerName);
 	room.sendAnnouncement(`${playerFind.nick} || gols: ${playerFind.gols}  ⚽ | assists: ${playerFind.assists} 👟 | vitórias: ${playerFind.vitorias} 👍 | derrotas: ${playerFind.derrotas} 😥` );
 }
 
