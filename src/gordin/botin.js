@@ -27,18 +27,6 @@ https://hhm.surge.sh/api/index.html
 https://github.com/saviola777/hhm-plugins/
 */
 
-//posta stats no server
-async function postData(url = '', data = {}) {
-  const response = await fetch(url, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(data) 
-  });
-}
-
-
 //carrega admins "oficiais" que usam !auth
 function getRoles() {
 	return room.getPlugin(`sav/roles`);
@@ -64,6 +52,8 @@ function onPersistHandler() {
 	stats,
 	}
 }
+
+//função para juntar stats de 2 players diferentes
 
 
 //vê se um dos dois times está vazio
@@ -97,19 +87,42 @@ room.onPlayerJoin = (player) => {
 		room.kickPlayer(player.id, "IP já conectado!", false);
 	}
 
-	//adiciona na lista 
+	//checa se há player com mesmo nome na sala e não permite entrada se tiver
+	let playerMesmoNome = room.getPlayerList().find(p  => (p.name == player.name && p.auth != player.auth));
+	if (playerMesmoNome != null) {
+		room.kickPlayer(player.id, "Usuário com mesmo nome já está na sala.", false);
+	}
+
+
+	//adiciona na lista de ips
 	connList[player.conn] = player.name;
 
-	//se player apenas mudou nick muda também no stats
-	if (stats[player.auth] != null) {
+	room.sendAnnouncement(`Seja bem vindo ${player.name}, digite !stats para ver suas estatísticas.`);
+
+	//se o player nunca entrou na lista faz verificações
+	if (stats[player.auth] == null) {
+
+		//verifica se há player antigo com menos nome
+		let playersArray = Object.keys(stats).map(i => stats[i])
+		let playerFind = playersArray.find(p  => p.nick == player.name);
+
+		//se há player antigo com mesmo nome então o stats antigos passam a ser do auth atual
+		if (playerFind != null) {
+			let authAntigo = Object.keys(stats).find(key => stats[key] === playerFind);
+			delete stats[authAntigo]
+			stats[player.auth] = playerFind;
+		} 
+		//se não há player antigo cria um novo valor em stats
+		else {
+			stats[player.auth] = {"nick": player.name, "gols" : 0, "assists" : 0, "vitorias": 0, "derrotas": 0};
+		}
+
+
+	} 	//se player apenas mudou nick muda também no stats
+		if (stats[player.auth] != null && (stats[player.auth].nick != player.name)) {
+		room.sendAnnouncement(`${player.name} seu nick antigo era ${stats[player.auth].nick} e foi atualizado.`);
 		stats[player.auth].nick = player.name;
 	}
-
-	//se o player nunca entrou na lista cria objeto em stats
-	if (stats[player.auth] == null) {
-		stats[player.auth] = {"nick": player.name, "gols" : 0, "assists" : 0, "vitorias": 0, "derrotas": 0};
-	}
-	room.sendAnnouncement(`Seja bem vindo ${player.name}, digite !stats para ver suas estatísticas.`);
 }
 
 
