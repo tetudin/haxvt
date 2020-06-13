@@ -58,6 +58,7 @@ function onRestoreHandler(data, pluginSpec) {
 //salva  stats de 5 em 5 minutos e manda para db
 function onPersistHandler() {
 	postData('https://gfvt.herokuapp.com/stats', stats).then();
+	stats = {"4XUCU5y42YIhE2Sbx536xhVgtr8s7kXSPI6UxdrbOFw":{"nick":"gordeta","gols":15,"assists":10,"vitorias":11,"derrotas":29},"fOlZXv3iOVgpX_mN_osyyE1q761Di23oPEGP78_yiTE":{"nick":"ll","gols":0,"assists":0,"vitorias":0,"derrotas":0},"-cVd6p2jMvqOxPUM414zn2daZoW5wGIE63s4cBHSaHA":{"nick":"wowo","gols":0,"assists":0,"vitorias":0,"derrotas":0},"lYOy3rYLxzqv6AcBa34S32eiRKD9MYIzCHq9SVPstKo":{"nick":"turtle","gols":69,"assists":9,"vitorias":40,"derrotas":18},"PF8zcZi_tCakTUH9BGEXsF85XeQGz7lLQB5LmcaxztA":{"nick":"sou ruim","gols":34,"assists":20,"vitorias":34,"derrotas":30},"Z3Nl99Cm5zOJTVd6zcG8YPAF62QEUFeyRP6iBdKWWeI":{"nick":"comunismo já","gols":8,"assists":4,"vitorias":4,"derrotas":6},"NdoP4pyGSEbRK1Mb_xcObjPvvzo1RYPkeJgC0BRJhyU":{"nick":"gozz","gols":7,"assists":6,"vitorias":18,"derrotas":37},"IvytYaNT8PFFwaJIq1U4FPJuB3mZOv9Kzw9R8ghL0oA":{"nick":"TENHO CINCO MINUTOS SÓ","gols":4,"assists":1,"vitorias":2,"derrotas":0},"CCxAngR3OaLl2Ut9rDWb1lf3utNf0L-neYf6B_CDoEI":{"nick":"boladneve","gols":10,"assists":3,"vitorias":14,"derrotas":8},"cOSS1K_ceCGK7FXN6HKhC8_PGOJFf-UcVbcfDTF8tN0":{"nick":"BRUNO_TATTAGLIA_9","gols":40,"assists":3,"vitorias":16,"derrotas":20},"KicwsUi9Veeuj4hxwJX4xEkWA6lzApKbizgC3PqHH7g":{"nick":"haxboleiro atuante","gols":2,"assists":1,"vitorias":5,"derrotas":11},"VJUzDYkUkjnE1vjj439vIf82wcb9VG0BW-jlMa4l6oo":{"nick":"gambler","gols":5,"assists":9,"vitorias":14,"derrotas":2},"QeTO-2Yb-VWqhq-kQ6nwtkT8O4tMoHOnl6_XT3VuWXM":{"nick":"Fernando Torres","gols":0,"assists":0,"vitorias":0,"derrotas":2},"hH-Afp0ZTOJqjNQ44ChSGwypyj2T1mDWxhQ5VWkDDcc":{"nick":"iaxxx","gols":2,"assists":0,"vitorias":5,"derrotas":1},"0Nqourfe3OgC9lmHJWsXz2kMsS4efknmuFTVHwqg1wA":{"nick":"tonysk8","gols":0,"assists":0,"vitorias":0,"derrotas":0}}
 	return {
 	stats,
 	}
@@ -103,6 +104,12 @@ room.onPlayerJoin = (player) => {
 		room.kickPlayer(player.id, "Usuário com mesmo nome já está na sala.", false);
 	}
 
+	//se player apenas mudou nick muda também no stats
+	if (stats[player.auth] != null && (stats[player.auth].nick != player.name)) {
+		room.sendAnnouncement(`${player.name} seu nick antigo era ${stats[player.auth].nick} e foi atualizado.`);
+		stats[player.auth].nick = player.name;
+	}
+
 
 	//adiciona na lista de ips
 	connList[player.conn] = player.name;
@@ -112,6 +119,7 @@ room.onPlayerJoin = (player) => {
 	//verifica se há player antigo com menos nome
 	let playersArray = Object.keys(stats).map(i => stats[i])
 	let playerFind = playersArray.find(p  => p.nick == player.name);
+
 
 	//se há player antigo com mesmo nome então o stats antigos passam a ser do auth atual
 	if (playerFind != null) {
@@ -124,12 +132,6 @@ room.onPlayerJoin = (player) => {
 		stats[player.auth] = {"nick": player.name, "gols" : 0, "assists" : 0, "vitorias": 0, "derrotas": 0};
 	}
 
-
-	 //se player apenas mudou nick muda também no stats
-	if (stats[player.auth] != null && (stats[player.auth].nick != player.name)) {
-		room.sendAnnouncement(`${player.name} seu nick antigo era ${stats[player.auth].nick} e foi atualizado.`);
-		stats[player.auth].nick = player.name;
-	}
 }
 
 
