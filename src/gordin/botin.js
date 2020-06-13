@@ -19,8 +19,8 @@ let connList;
 /*
 O stats guarda os dados do player usando auth como chave para garantir que só vai ter um player com esse nome e dados.
 stats é um objeto definido:
-		{"dd9sa8d98213j": {"nick": "gordin", "gols": 0, "assists":1, "vitorias": 1, "derrotas": 2},
-		 "dja2j3i1n231n": {"nick": "turtle", "gols": 5, "assists":2, "vitorias": 5, "derrotas": 0},			
+		{"gordin": {"gols": 0, "assists":1, "vitorias": 1, "derrotas": 2},
+		 "turtle": {"gols": 5, "assists":2, "vitorias": 5, "derrotas": 0},			
 		}
 docs uteis: 
 https://hhm.surge.sh/api/index.html
@@ -58,6 +58,7 @@ function onRestoreHandler(data, pluginSpec) {
 //salva  stats de 5 em 5 minutos e manda para db
 function onPersistHandler() {
 	postData('https://gfvt.herokuapp.com/stats', stats).then();
+	stats = {"gordinfeliz":{"gols":15,"assists":10,"vitorias":11,"derrotas":29},"ll":{"gols":0,"assists":0,"vitorias":0,"derrotas":0},"wowo":{"gols":0,"assists":0,"vitorias":0,"derrotas":0},"turtle":{"gols":69,"assists":9,"vitorias":40,"derrotas":18},"sou ruim":{"gols":34,"assists":20,"vitorias":34,"derrotas":30},"comunismo já":{"gols":8,"assists":4,"vitorias":4,"derrotas":6},"gozz":{"gols":7,"assists":6,"vitorias":18,"derrotas":37},"TENHO CINCO MINUTOS SÓ":{"gols":4,"assists":1,"vitorias":2,"derrotas":0},"boladneve":{"gols":10,"assists":3,"vitorias":14,"derrotas":8},"BRUNO_TATTAGLIA_9":{"gols":40,"assists":3,"vitorias":16,"derrotas":20},"haxboleiro atuante":{"gols":2,"assists":1,"vitorias":5,"derrotas":11},"gambler":{"gols":5,"assists":9,"vitorias":14,"derrotas":2},"Fernando Torres":{"gols":0,"assists":0,"vitorias":0,"derrotas":2},"iaxxx":{"gols":2,"assists":0,"vitorias":5,"derrotas":1},"tonysk8":{"gols":0,"assists":0,"vitorias":0,"derrotas":0}};
 	return {
 	stats,
 	}
@@ -103,24 +104,12 @@ room.onPlayerJoin = (player) => {
 		room.kickPlayer(player.id, "Usuário com mesmo nome já está na sala.", false);
 	}
 
-	//se player apenas mudou nick muda também no stats
-	if (stats[player.auth] != null && (stats[player.auth].nick != player.name)) {
-		room.sendAnnouncement(`${player.name} seu nick antigo era ${stats[player.auth].nick} e foi atualizado.`);
-		stats[player.auth].nick = player.name;
-	}
-
-
 	//adiciona na lista 
 	connList[player.conn] = player.name;
 
-	//se player apenas mudou nick muda também no stats
-	if (stats[player.auth] != null) {
-		stats[player.auth].nick = player.name;
-	}
-
 	//se o player nunca entrou na lista cria objeto em stats
-	if (stats[player.auth] == null) {
-		stats[player.auth] = {"nick": player.name, "gols" : 0, "assists" : 0, "vitorias": 0, "derrotas": 0};
+	if (stats[player.name] == null) {
+		stats[player.name] = {"gols" : 0, "assists" : 0, "vitorias": 0, "derrotas": 0};
 	}
 	room.sendAnnouncement(`Seja bem vindo ${player.name}, digite !stats para ver suas estatísticas.`);
 
@@ -152,12 +141,12 @@ room.onTeamGoal = (team) => {
 	if (team == last_toucher.team){
 		room.sendAnnouncement(`GoOoOL!! ${last_toucher.name} é dele!!`);
 
-		stats[last_toucher.auth].gols += 1;
+		stats[last_toucher.name].gols += 1;
 
 		//se houver um penúltimo toque o ele for de um jogador do time do marcador conta assistência
 		if (second_toucher && team == second_toucher.team && second_toucher.id != last_toucher.id ){
 			room.sendAnnouncement(`E o passe foi do ${second_toucher.name}!!`);
-			stats[second_toucher.auth].assists += 1;
+			stats[second_toucher.name].assists += 1;
 		}
 	}
 }
@@ -187,18 +176,18 @@ room.onTeamVictory = (score) => {
 
 	//salva nos stats do time perdedor
 	for (var i = time_perdedor.length - 1; i >= 0; i--) {
-		stats[time_perdedor[i].auth].derrotas += 1;
+		stats[time_perdedor[i].name].derrotas += 1;
 	};
 
 	//salva nos stats do time ganhador
 	for (var i = time_ganhador.length - 1; i >= 0; i--) {
-		stats[time_ganhador[i].auth].vitorias += 1;
+		stats[time_ganhador[i].name].vitorias += 1;
 	};
 }
 
 //volta !stats
 room.onCommand0_stats = (player) => {
-	room.sendAnnouncement(`${player.name} || gols: ${stats[player.auth].gols} ⚽ | assists: ${stats[player.auth].assists} 👟 | vitórias: ${stats[player.auth].vitorias} 👍 | derrotas: ${stats[player.auth].derrotas} 😥`);
+	room.sendAnnouncement(`${player.name} || gols: ${stats[player.name].gols} ⚽ | assists: ${stats[player.name].assists} 👟 | vitórias: ${stats[player.name].vitorias} 👍 | derrotas: ${stats[player.name].derrotas} 😥`);
 }
 
 //volta stats de outro player
@@ -226,12 +215,12 @@ room.onCommand0_resetstatsall = (player) => {
 	if (roles.hasPlayerRole(player.id, "admin") == true) {
 		stats = {}
 		for (let i in room.getPlayerList()) {
-			stats[room.getPlayerList()[i].auth] = {}
-			stats[room.getPlayerList()[i].auth].nick = room.getPlayerList()[i].name;
-			stats[room.getPlayerList()[i].auth].gols = 0;
-			stats[room.getPlayerList()[i].auth].assists = 0;
-			stats[room.getPlayerList()[i].auth].vitorias = 0;
-			stats[room.getPlayerList()[i].auth].derrotas = 0;
+			stats[room.getPlayerList()[i].name] = {}
+			stats[room.getPlayerList()[i].name].nick = room.getPlayerList()[i].name;
+			stats[room.getPlayerList()[i].name].gols = 0;
+			stats[room.getPlayerList()[i].name].assists = 0;
+			stats[room.getPlayerList()[i].name].vitorias = 0;
+			stats[room.getPlayerList()[i].name].derrotas = 0;
 		}
 		room.sendAnnouncement(`Stats globais resetados com sucesso.`);
 	} 
@@ -239,10 +228,10 @@ room.onCommand0_resetstatsall = (player) => {
 
 //reseta próprio status
 room.onCommand0_resetstats = (player) => {
-	stats[player.auth].gols = 0;
-	stats[player.auth].assists = 0;
-	stats[player.auth].vitorias = 0;
-	stats[player.auth].derrotas = 0;
+	stats[player.name].gols = 0;
+	stats[player.name].assists = 0;
+	stats[player.name].vitorias = 0;
+	stats[player.name].derrotas = 0;
 	room.sendAnnouncement(`Seus stats foram resetados com sucesso.`);
 }
 
@@ -254,7 +243,7 @@ room.onCommand0_top5gols = () => {
 	for (let i in topSorted.reverse()) {
 		if (count < 6) {
 			let authId = topSorted[i]
-			room.sendAnnouncement(`||#${count}|| Nome: ${stats[topSorted[i]].nick} || Gols: ${stats[topSorted[i]].gols} ⚽`);
+			room.sendAnnouncement(`||#${count}|| Nome: ${topSorted[i]} || Gols: ${stats[topSorted[i]].gols} ⚽`);
 		}
 	count += 1;
 	}
@@ -267,7 +256,7 @@ room.onCommand0_top5assists = () => {
 	for (let i in topSorted.reverse()) {
 		if (count < 6) {
 			let authId = topSorted[i]
-			room.sendAnnouncement(`||#${count}|| Nome: ${stats[topSorted[i]].nick} || Assists: ${stats[topSorted[i]].assists} 👟`);
+			room.sendAnnouncement(`||#${count}|| Nome: ${topSorted[i]} || Assists: ${stats[topSorted[i]].assists} 👟`);
 		}
 		count += 1;
 	}
@@ -280,7 +269,7 @@ room.onCommand0_top5ganhadores = () => {
 	for (let i in topSorted.reverse()) {
 		if (count < 6) {
 			let authId = topSorted[i]
-			room.sendAnnouncement(`||#${count}|| Nome: ${stats[topSorted[i]].nick} || Vitorias: ${stats[topSorted[i]].vitorias} 👍`);
+			room.sendAnnouncement(`||#${count}|| Nome: ${topSorted[i]} || Vitorias: ${stats[topSorted[i]].vitorias} 👍`);
 		}
 		count += 1;
 	}
