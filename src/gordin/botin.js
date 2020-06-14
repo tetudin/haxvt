@@ -288,10 +288,10 @@ room.onCommand_transferirstats = (player, playerName) => {
 				if (stats[firstPlayerName] == null || stats[secondPlayerName] == null) {
 					room.sendAnnouncement(`Um dos users não foi encontrado.`);
 				} else {
-					stats[secondPlayerName].gols = stats[firstPlayerName].gols;
-					stats[secondPlayerName].assists = stats[firstPlayerName].assists;
-					stats[secondPlayerName].vitorias = stats[firstPlayerName].vitorias;
-					stats[secondPlayerName].derrotas = stats[firstPlayerName].derrotas;
+					stats[secondPlayerName].gols += stats[firstPlayerName].gols;
+					stats[secondPlayerName].assists += stats[firstPlayerName].assists;
+					stats[secondPlayerName].vitorias += stats[firstPlayerName].vitorias;
+					stats[secondPlayerName].derrotas += stats[firstPlayerName].derrotas;
 					delete stats[firstPlayerName]
 					room.sendAnnouncement(`${secondPlayerName} || gols: ${stats[secondPlayerName].gols}  ⚽ | assists: ${stats[secondPlayerName].assists} 👟 | vitórias: ${stats[secondPlayerName].vitorias} 👍 | derrotas: ${stats[secondPlayerName].derrotas} 😥` );		
 				}
