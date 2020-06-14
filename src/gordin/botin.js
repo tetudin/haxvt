@@ -199,7 +199,7 @@ room.onCommand_stats = (player, playerName) => {
 		if (playerFind == null) {
 			room.sendAnnouncement(`Usuário não encontrado 😥.` );
 		} else {
-			room.sendAnnouncement(`${playerFind.nick} || gols: ${playerFind.gols}  ⚽ | assists: ${playerFind.assists} 👟 | vitórias: ${playerFind.vitorias} 👍 | derrotas: ${playerFind.derrotas} 😥` );
+			room.sendAnnouncement(`${playerName} || gols: ${playerFind.gols}  ⚽ | assists: ${playerFind.assists} 👟 | vitórias: ${playerFind.vitorias} 👍 | derrotas: ${playerFind.derrotas} 😥` );
 		}
 	}
 }
