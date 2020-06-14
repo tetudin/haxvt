@@ -289,6 +289,7 @@ room.onCommand_transferirstats = (player, playerName) => {
 					room.sendAnnouncement(`Um dos users não foi encontrado.`);
 				} else {
 					stats[secondPlayerName] = stats[firstPlayerName]
+					delete stats[firstPlayerName]
 					room.sendAnnouncement(`${secondPlayerName} || gols: ${stats[secondPlayerName].gols}  ⚽ | assists: ${stats[secondPlayerName].assists} 👟 | vitórias: ${stats[secondPlayerName].vitorias} 👍 | derrotas: ${stats[secondPlayerName].derrotas} 😥` );		
 				}
 			}
