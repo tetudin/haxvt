@@ -273,6 +273,31 @@ room.onCommand0_top5ganhadores = () => {
 	}
 }
 
+//transfere stats de um player para outro (para admins)
+room.onCommand_transferirstats = (player, playerName) => {
+	roles = getRoles()
+	if (roles.hasPlayerRole(player.id, "admin") == true) {
+		if (playerName != "") {
+			indiceMetade = playerName.indexOf("?");
+			
+			if (indiceMetade != -1) {
+				firstPlayerName = String(playerName.slice(0,indiceMetade)).replace(","," ")
+				secondPlayerName = String(playerName.slice(indiceMetade+1,playerName.length)).replace(","," ")
+
+
+				if (stats[firstPlayerName] == null || stats[secondPlayerName] == null) {
+					room.sendAnnouncement(`Um dos users não foi encontrado.`);
+				} else {
+					stats[secondPlayerName] = stats[firstPlayerName]
+					room.sendAnnouncement(`${secondPlayerName} || gols: ${stats[secondPlayerName].gols}  ⚽ | assists: ${stats[secondPlayerName].assists} 👟 | vitórias: ${stats[secondPlayerName].vitorias} 👍 | derrotas: ${stats[secondPlayerName].derrotas} 😥` );		
+				}
+			}
+		} else {
+			room.sendAnnouncement(`Um dos users não foi encontrado. Comando: !transferirstats <user1> ? <user2>`);
+		} 
+	}
+}
+
 //salva DB imediatamente, só para admins
 room.onCommand0_savedb = (player) => {
 	roles = getRoles()
