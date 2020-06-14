@@ -273,6 +273,17 @@ room.onCommand0_top5ganhadores = () => {
 	}
 }
 
+//apagastats
+room.onCommand_apagarstats = (player, playerName) => {
+	roles = getRoles()
+	if (roles.hasPlayerRole(player.id, "admin") == true) {
+		if (playerName != "") {
+			playerN = String(playerName).replace(/,/g," ");
+			delete stats[playerN]
+		}
+	}
+}
+
 //transfere stats de um player para outro (para admins)
 room.onCommand_transferirstats = (player, playerName) => {
 	roles = getRoles()
