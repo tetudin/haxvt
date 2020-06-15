@@ -15,7 +15,7 @@ var last_toucher;
 var second_toucher;
 let stats;
 let connList;
-
+let linkUrl;
 /*
 O stats guarda os dados do player usando auth como chave para garantir que só vai ter um player com esse nome e dados.
 stats é um objeto definido:
@@ -26,6 +26,15 @@ docs uteis:
 https://hhm.surge.sh/api/index.html
 https://github.com/saviola777/hhm-plugins/
 */
+
+//prepara dados para página
+function prepData () {
+	playerList = [];
+	room.getPlayerList().map(x => playerList.push(x.name));
+	dados = {"stats": stats, "playersOnline": playerList, "link": linkUrl}
+
+	return dados;
+}
 
 //posta stats no server
 async function postData(url = '', data = {}) {
@@ -57,7 +66,8 @@ function onRestoreHandler(data, pluginSpec) {
 
 //salva  stats de 5 em 5 minutos e manda para db
 function onPersistHandler() {
-	postData('https://gfvt.herokuapp.com/stats', stats).then();
+	postData('https://gfvt.herokuapp.com/stats', prepData()).then();
+
 	return {
 	stats,
 	}
@@ -86,7 +96,8 @@ function getBluePlayers() {
 
 
 //ao criar sala inicializa lista de ips vazia
-function onRoomLinkHandler() {
+function onRoomLinkHandler(link) {
+	linkUrl = link;
 	connList = {}
 }
 
