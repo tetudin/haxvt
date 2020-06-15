@@ -225,13 +225,13 @@ room.onCommand0_resetstatsall = (player) => {
 }
 
 //reseta próprio status
-room.onCommand0_resetstats = (player) => {
-	stats[player.name].gols = 0;
-	stats[player.name].assists = 0;
-	stats[player.name].vitorias = 0;
-	stats[player.name].derrotas = 0;
-	room.sendAnnouncement(`Seus stats foram resetados com sucesso.`);
-}
+//room.onCommand0_resetstats = (player) => {
+//	stats[player.name].gols = 0;
+//	stats[player.name].assists = 0;
+//	stats[player.name].vitorias = 0;
+//	stats[player.name].derrotas = 0;
+//	room.sendAnnouncement(`Seus stats foram resetados com sucesso.`);
+//}
 
 
 //retorna top5gols
