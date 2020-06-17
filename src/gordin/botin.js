@@ -303,8 +303,8 @@ room.onCommand_transferirstats = (player, playerName) => {
 			indiceMetade = playerName.indexOf("?");
 			
 			if (indiceMetade != -1) {
-				firstPlayerName = String(playerName.slice(0,indiceMetade)).replace(","," ")
-				secondPlayerName = String(playerName.slice(indiceMetade+1,playerName.length)).replace(","," ")
+				firstPlayerName = String(playerName.slice(0,indiceMetade)).replace(/,/g," ")
+				secondPlayerName = String(playerName.slice(indiceMetade+1,playerName.length)).replace(/,/g," ")
 
 
 				if (stats[firstPlayerName] == null || stats[secondPlayerName] == null) {
