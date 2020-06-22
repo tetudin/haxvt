@@ -68,8 +68,8 @@ function onRestoreHandler(data, pluginSpec) {
 function onPersistHandler() {
 	postData('https://gfvt.herokuapp.com/stats', prepData()).then();
 
-	const stats = new Blob([JSON.stringify(stats, null, 2)], {type : 'application/json'});
-	haxroomie.download({ fileName: 'stats.json', file: stats});
+	const saveStats = new Blob([JSON.stringify(stats, null, 2)], {type : 'application/json'});
+	haxroomie.download({ fileName: 'stats.json', file: saveStats});
 
 	return {
 		stats,
