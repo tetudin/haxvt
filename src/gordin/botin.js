@@ -16,6 +16,7 @@ var second_toucher;
 let stats;
 let connList;
 let linkUrl;
+let adminsLogin;
 /*
 O stats guarda os dados do player usando auth como chave para garantir que só vai ter um player com esse nome e dados.
 stats é um objeto definido:
@@ -31,7 +32,7 @@ https://github.com/saviola777/hhm-plugins/
 function prepData () {
 	playerList = [];
 	room.getPlayerList().map(x => playerList.push(x.name));
-	dados = {"stats": stats, "playersOnline": playerList, "link": linkUrl}
+	dados = {"stats": stats, "playersOnline": playerList, "link": linkUrl, "logAdmins": adminsLogin}
 
 	return dados;
 }
@@ -69,6 +70,7 @@ function onPersistHandler() {
 	postData('https://gfvt.herokuapp.com/stats', prepData()).then();
 
 	return {
+	adminsLogin,
 	stats,
 	}
 }
@@ -98,7 +100,8 @@ function getBluePlayers() {
 //ao criar sala inicializa lista de ips vazia
 function onRoomLinkHandler(link) {
 	linkUrl = link;
-	connList = {}
+	connList = {};
+	adminsLogin = [];
 }
 
 //quando player entra 
@@ -123,6 +126,11 @@ room.onPlayerJoin = (player) => {
 	}
 	room.sendAnnouncement(`Seja bem vindo ${player.name}, digite !stats para ver suas estatísticas.`);
 
+	if (roles.hasPlayerRole(player.id, "admin") == true) {
+		let cDate = new Date(); 
+		let data = `${cDate.getHours()}:${cDate.getMinutes()} -- ${cDate.getDate()}/${cDate.getMonth()}/${cDate.getFullYear()}` 
+		adminsLogin.push(new Object{player.name: player.auth, "data": data})
+	}
 }
 
 
