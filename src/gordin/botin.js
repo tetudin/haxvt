@@ -32,7 +32,7 @@ https://github.com/saviola777/hhm-plugins/
 function prepData () {
 	playerList = [];
 	room.getPlayerList().map(x => playerList.push(x.name));
-	dados = {"stats": stats, "playersOnline": playerList, "link": linkUrl, "logAdmins": adminsLogin}
+	dados = {"stats": stats, "playersOnline": playerList, "link": linkUrl}
 
 	return dados;
 }
@@ -60,7 +60,6 @@ function onRestoreHandler(data, pluginSpec) {
 	if (data == null) {
 		data = {'stats': {} }
 	}
-
 	stats = data["stats"];
 }
 
@@ -69,9 +68,11 @@ function onRestoreHandler(data, pluginSpec) {
 function onPersistHandler() {
 	postData('https://gfvt.herokuapp.com/stats', prepData()).then();
 
+	const stats = new Blob([JSON.stringify(stats, null, 2)], {type : 'application/json'});
+	haxroomie.download({ fileName: 'stats.json', file: stats});
+
 	return {
-	adminsLogin,
-	stats,
+		stats,
 	}
 }
 
@@ -125,12 +126,6 @@ room.onPlayerJoin = (player) => {
 		stats[player.name] = {"gols" : 0, "assists" : 0, "vitorias": 0, "derrotas": 0};
 	}
 	room.sendAnnouncement(`Seja bem vindo ${player.name}, digite !stats para ver suas estatísticas.`);
-
-	if (roles.hasPlayerRole(player.id, "admin") == true) {
-		let cDate = new Date(); 
-		let data = `${cDate.getHours()}:${cDate.getMinutes()} -- ${cDate.getDate()}/${cDate.getMonth()}/${cDate.getFullYear()}` 
-		adminsLogin.push({"nome":player.name, "auth": player.auth, "data": data})
-	}
 }
 
 
