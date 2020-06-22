@@ -16,7 +16,6 @@ var second_toucher;
 let stats;
 let connList;
 let linkUrl;
-let adminsLogin;
 /*
 O stats guarda os dados do player usando auth como chave para garantir que só vai ter um player com esse nome e dados.
 stats é um objeto definido:
@@ -71,6 +70,9 @@ function onPersistHandler() {
 	const saveStats = new Blob([JSON.stringify(stats, null, 2)], {type : 'application/json'});
 	haxroomie.download({ fileName: 'stats.json', file: saveStats});
 
+	const saveChat = new Blob([JSON.stringify(chat, null, 2)], {type : 'application/json'});
+	haxroomie.download({ fileName: 'stats.json', file: saveChat});
+
 	return {
 		stats,
 	}
@@ -102,7 +104,7 @@ function getBluePlayers() {
 function onRoomLinkHandler(link) {
 	linkUrl = link;
 	connList = {};
-	adminsLogin = [];
+	chat = [];
 }
 
 //quando player entra 
@@ -128,6 +130,9 @@ room.onPlayerJoin = (player) => {
 	room.sendAnnouncement(`Seja bem vindo ${player.name}, digite !stats para ver suas estatísticas.`);
 }
 
+room.onPlayerChat = (player, message) => {
+	chat.push({"nome": player.name, "msg": message});
+}
 
 
 
