@@ -71,7 +71,7 @@ function onPersistHandler() {
 	haxroomie.download({ fileName: 'stats.json', file: saveStats});
 
 	const saveChat = new Blob([JSON.stringify(chat, null, 2)], {type : 'application/json'});
-	haxroomie.download({ fileName: 'stats.json', file: saveChat});
+	haxroomie.download({ fileName: 'chat.txt', file: saveChat});
 
 	return {
 		stats,
