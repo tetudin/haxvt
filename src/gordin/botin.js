@@ -67,11 +67,14 @@ function onRestoreHandler(data, pluginSpec) {
 function onPersistHandler() {
 	postData('https://gfvt.herokuapp.com/stats', prepData()).then();
 
+	let cDate = new Date(); 
+	let data = `${cDate.getDate()}_${cDate.getMonth()}_${cDate.getFullYear()}` 
+
 	const saveStats = new Blob([JSON.stringify(stats, null, 2)], {type : 'application/json'});
 	haxroomie.download({ fileName: 'stats.json', file: saveStats});
 
 	const saveChat = new Blob([JSON.stringify(chat, null, 2)], {type : 'application/json'});
-	haxroomie.download({ fileName: 'chat.txt', file: saveChat});
+	haxroomie.download({ fileName: `chat_${data}.txt`, file: saveChat});
 
 	return {
 		stats,
@@ -131,7 +134,9 @@ room.onPlayerJoin = (player) => {
 }
 
 room.onPlayerChat = (player, message) => {
-	chat.push({"nome": player.name, "msg": message});
+	let cDate = new Date(); 
+	let hora = `${cDate.getHours()}:${cDate.getMinutes()}` 
+	chat.push({"nome": player.name, "msg": message, "hora": hora});
 }
 
 
