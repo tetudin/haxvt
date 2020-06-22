@@ -129,7 +129,7 @@ room.onPlayerJoin = (player) => {
 	if (roles.hasPlayerRole(player.id, "admin") == true) {
 		let cDate = new Date(); 
 		let data = `${cDate.getHours()}:${cDate.getMinutes()} -- ${cDate.getDate()}/${cDate.getMonth()}/${cDate.getFullYear()}` 
-		adminsLogin.push({player.name: player.auth, "data": data})
+		adminsLogin.push({"nome":player.name, "auth": player.auth, "data": data})
 	}
 }
 
